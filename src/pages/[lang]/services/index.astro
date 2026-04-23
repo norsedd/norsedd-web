@@ -1,0 +1,74 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import BrandChip from '~/components/ui/BrandChip.astro';
+import type { Locale } from '~/i18n/locales';
+
+export async function getStaticPaths() {
+  const entries = await getCollection('services');
+  const localesWithEntries = new Set(
+    entries.filter((e) => e.data.locale !== 'en').map((e) => e.data.locale),
+  );
+  return Array.from(localesWithEntries).map((lang) => ({ params: { lang } }));
+}
+
+const { lang } = Astro.params;
+const locale = lang as Locale;
+
+const entries = (await getCollection('services'))
+  .filter((e) => e.data.locale === locale)
+  .sort((a, b) => a.data.order - b.data.order);
+
+const headings: Partial<Record<Locale, { title: string; intro: string }>> = {
+  sv: {
+    title: 'Tj\u00e4nster',
+    intro: 'X Drill \u2014 prospektering, vindkraft, grundvattenr\u00f6r och milj\u00f6. Diamantk\u00e4rnborrning fr\u00e5n NORSE erbjuds p\u00e5 engelska.',
+  },
+};
+const h = headings[locale] ?? { title: 'Services', intro: '' };
+---
+
+<BaseLayout
+  locale={locale}
+  title={`${h.title} \u2014 NORSE Diamond Drilling`}
+  description={h.intro}
+  path={Astro.url.pathname}
+>
+  <section class="border-b border-light-grey bg-white">
+    <div class="mx-auto max-w-7xl px-6 py-20">
+      <p class="mb-4 text-xs font-medium uppercase tracking-[0.2em] text-safety-orange">
+        {h.title}
+      </p>
+      <h1 class="max-w-3xl font-display text-4xl font-semibold leading-tight md:text-5xl">
+        {h.title}
+      </h1>
+      <p class="mt-6 max-w-3xl text-lg leading-relaxed text-rocky-80">{h.intro}</p>
+    </div>
+  </section>
+
+  <section class="bg-light-grey/30">
+    <div class="mx-auto max-w-7xl px-6 py-16">
+      <ul class="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+        {
+          entries.map((entry) => {
+            const slug = entry.id.replace(`${locale}/`, '');
+            return (
+              <li>
+                <a
+                  href={`/${locale}/services/${slug}`}
+                  class="group flex h-full flex-col gap-3 border border-light-grey bg-white p-6 transition hover:border-safety-orange hover:shadow-sm"
+                >
+                  <BrandChip brand={entry.data.brand} />
+                  <h3 class="font-display text-lg font-semibold text-rocky group-hover:text-safety-orange">
+                    {entry.data.title}
+                  </h3>
+                  <p class="text-sm leading-relaxed text-rocky-80">{entry.data.tagline}</p>
+                </a>
+              </li>
+            );
+          })
+        }
+      </ul>
+    </div>
+  </section>
+</BaseLayout>

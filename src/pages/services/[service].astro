@@ -1,4 +1,5 @@
 ---
+import { getCollection, render } from 'astro:content';
 import BaseLayout from '~/layouts/BaseLayout.astro';
 import BrandChip from '~/components/ui/BrandChip.astro';
 import Button from '~/components/ui/Button.astro';
@@ -16,12 +17,25 @@ interface Props {
 }
 
 const { svc } = Astro.props;
+
+const allServices = await getCollection('services');
+const entry = allServices.find(
+  (e) => e.data.locale === 'en' && e.id === `en/${svc.slug}`,
+);
+
+const data = entry?.data;
+const Content = entry ? (await render(entry)).Content : null;
+
+const title = data?.title ?? svc.titleEn;
+const tagline = data?.tagline ?? svc.taglineEn;
+const certs = data?.certifications ?? [];
+const refs = data?.referenceClients ?? [];
 ---
 
 <BaseLayout
   locale="en"
-  title={`${svc.titleEn} \u2014 NORSE Diamond Drilling`}
-  description={svc.taglineEn}
+  title={`${title} \u2014 NORSE Diamond Drilling`}
+  description={data?.seoDescription ?? tagline}
   path={Astro.url.pathname}
 >
   <article class="border-b border-light-grey bg-white">
@@ -29,26 +43,63 @@ const { svc } = Astro.props;
       <nav class="mb-6 text-sm text-rocky-50" aria-label="Breadcrumb">
         <a href="/services" class="hover:text-safety-orange">Services</a>
         <span class="mx-2" aria-hidden="true">/</span>
-        <span class="text-rocky">{svc.titleEn}</span>
+        <span class="text-rocky">{title}</span>
       </nav>
       <div class="mb-4"><BrandChip brand={svc.brand} /></div>
-      <h1 class="font-display text-4xl font-semibold leading-tight md:text-5xl">
-        {svc.titleEn}
-      </h1>
-      <p class="mt-6 text-lg leading-relaxed text-rocky-80">{svc.taglineEn}</p>
+      <h1 class="font-display text-4xl font-semibold leading-tight md:text-5xl">{title}</h1>
+      <p class="mt-6 text-lg leading-relaxed text-rocky-80">{tagline}</p>
     </div>
   </article>
 
-  <section class="bg-light-grey/30">
-    <div class="mx-auto max-w-4xl px-6 py-20">
-      <h2 class="font-display text-2xl font-semibold md:text-3xl">Detailed service content</h2>
-      <p class="mt-4 text-rocky-80">
-        Full service narrative, certifications, reference clients, specs, and contact person land
-        in the content-migration commit. Each service will be backed by an MDX file in
-        <code class="rounded bg-white px-1 py-0.5 text-sm">src/content/services/en/{svc.slug}.mdx</code>.
-      </p>
-      <div class="mt-8 flex flex-wrap gap-3">
-        <Button href="/contact" variant="primary">Request a quote</Button>
+  {
+    Content && (
+      <section class="bg-white">
+        <div class="prose prose-rocky mx-auto max-w-3xl px-6 py-16">
+          <Content />
+        </div>
+      </section>
+    )
+  }
+
+  {
+    (certs.length > 0 || refs.length > 0) && (
+      <section class="border-t border-light-grey bg-light-grey/30">
+        <div class="mx-auto grid max-w-4xl gap-12 px-6 py-16 md:grid-cols-2">
+          {certs.length > 0 && (
+            <div>
+              <h2 class="font-display text-xl font-semibold">Certifications</h2>
+              <ul class="mt-3 flex flex-wrap gap-2 text-sm">
+                {certs.map((c) => (
+                  <li class="border border-rocky/20 bg-white px-3 py-1.5 text-rocky">{c}</li>
+                ))}
+              </ul>
+            </div>
+          )}
+          {refs.length > 0 && (
+            <div>
+              <h2 class="font-display text-xl font-semibold">Reference clients</h2>
+              <ul class="mt-3 flex flex-wrap gap-2 text-sm">
+                {refs.map((r) => (
+                  <li class="border border-rocky/20 bg-white px-3 py-1.5 text-rocky">{r}</li>
+                ))}
+              </ul>
+            </div>
+          )}
+        </div>
+      </section>
+    )
+  }
+
+  <section class="bg-rocky text-white">
+    <div class="mx-auto max-w-4xl px-6 py-16 md:flex md:items-center md:justify-between">
+      <div>
+        <h2 class="font-display text-2xl font-semibold md:text-3xl">
+          Planning a {title.toLowerCase()} programme?
+        </h2>
+        <p class="mt-2 text-rocky-50">We respond within one working day.</p>
+      </div>
+      <div class="mt-6 flex gap-3 md:mt-0">
+        <Button href="/contact" variant="primary">Enquire</Button>
         <Button href="/services" variant="ghost">&larr; All services</Button>
       </div>
     </div>

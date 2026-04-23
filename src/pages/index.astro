@@ -2,17 +2,15 @@
 import BaseLayout from '~/layouts/BaseLayout.astro';
 import Button from '~/components/ui/Button.astro';
 import BrandChip from '~/components/ui/BrandChip.astro';
-import { services } from '~/data/services';
-import { t } from '~/i18n/ui';
+import { norseServices, xdrillServices } from '~/data/services';
 
-const locale = 'en';
-const strings = t(locale);
+const clients = ['Boliden', 'DMX', 'FQM', 'Rana Gruber', 'Franzefoss', 'AWER'];
 ---
 
 <BaseLayout
-  locale={locale}
-  title="NORSE Diamond Drilling — Nordic core drilling specialists"
-  description="NORSE Diamond Drilling delivers surface, underground, and helicopter-portable core drilling across Sweden, Norway, and Finland. Together with X Drill AB we cover the full Nordic drilling spectrum."
+  locale="en"
+  title="NORSE Diamond Drilling \u2014 Expert diamond core drilling in the Nordics"
+  description="NORSE Diamond Drilling provides expert diamond core drilling services across Sweden, Norway, and Finland \u2014 surface, underground, and helicopter-portable. Together with X Drill AB we cover the full Nordic drilling spectrum."
   path={Astro.url.pathname}
 >
   <section class="border-b border-light-grey bg-white">
@@ -21,55 +19,56 @@ const strings = t(locale);
         NORSE Diamond Drilling
       </p>
       <h1 class="max-w-4xl font-display text-4xl font-semibold leading-[1.05] md:text-6xl">
-        Extract Earth&rsquo;s potential with NORSE.
+        Extract Earth&rsquo;s Potential With NORSE.
       </h1>
       <p class="mt-6 max-w-2xl text-lg leading-relaxed text-rocky-80">
-        Core drilling across Sweden, Norway, and Finland &mdash; surface, underground,
-        and helicopter-portable. Together with our subsidiary X Drill AB we also deliver
-        exploration (BOT sampling), groundwater, and wind-power services.
+        Expert diamond core drilling services in the Nordics. Surface, underground, and
+        helicopter-portable &mdash; plus exploration sampling, groundwater, and wind-power
+        services through our subsidiary X Drill AB.
       </p>
       <div class="mt-8 flex flex-wrap gap-3">
-        <Button href="/contact" variant="primary">{strings.cta.requestQuote}</Button>
-        <Button href="/services" variant="secondary">{strings.cta.viewServices}</Button>
+        <Button href="/contact" variant="primary">Enquire</Button>
+        <Button href="/services" variant="secondary">View services</Button>
       </div>
+    </div>
+  </section>
+
+  <section class="border-b border-light-grey bg-white">
+    <div class="mx-auto max-w-7xl px-6 py-10">
+      <p class="mb-6 text-xs font-semibold uppercase tracking-[0.2em] text-rocky-50">
+        Trusted by
+      </p>
+      <ul class="flex flex-wrap items-center gap-x-10 gap-y-4 text-rocky-80">
+        {
+          clients.map((c) => (
+            <li class="font-display text-lg font-semibold tracking-tight text-rocky/80">
+              {c}
+            </li>
+          ))
+        }
+      </ul>
     </div>
   </section>
 
   <section class="bg-light-grey/30">
     <div class="mx-auto max-w-7xl px-6 py-20">
-      <div class="mb-10 flex items-end justify-between gap-6">
-        <div>
-          <p class="mb-2 text-xs font-semibold uppercase tracking-wider text-rocky-50">
-            Services
-          </p>
-          <h2 class="font-display text-3xl font-semibold md:text-4xl">
-            Full-spectrum Nordic drilling
-          </h2>
-        </div>
-        <a
-          href="/services"
-          class="hidden text-sm font-medium text-safety-orange hover:text-safety-orange-80 md:inline-flex"
-        >
-          All services &rarr;
-        </a>
+      <div class="mb-8 flex items-center gap-3">
+        <BrandChip brand="norse" />
+        <h2 class="font-display text-2xl font-semibold md:text-3xl">Diamond core drilling</h2>
       </div>
-
-      <ul class="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+      <ul class="grid gap-4 md:grid-cols-3">
         {
-          services.map((svc) => (
+          norseServices.map((svc) => (
             <li>
               <a
                 href={`/services/${svc.slug}`}
                 class="group flex h-full flex-col gap-3 border border-light-grey bg-white p-6 transition hover:border-safety-orange hover:shadow-sm"
               >
-                <BrandChip brand={svc.brand} />
                 <h3 class="font-display text-xl font-semibold text-rocky group-hover:text-safety-orange">
                   {svc.titleEn}
                 </h3>
                 <p class="text-sm leading-relaxed text-rocky-80">{svc.taglineEn}</p>
-                <span class="mt-auto text-sm font-medium text-safety-orange">
-                  Learn more &rarr;
-                </span>
+                <span class="mt-auto text-sm font-medium text-safety-orange">Learn more &rarr;</span>
               </a>
             </li>
           ))
@@ -78,27 +77,49 @@ const strings = t(locale);
     </div>
   </section>
 
-  <section class="border-t border-light-grey bg-white">
-    <div class="mx-auto max-w-7xl px-6 py-20 md:grid md:grid-cols-2 md:gap-16">
-      <div>
-        <p class="mb-2 text-xs font-semibold uppercase tracking-wider text-rocky-50">
-          About
-        </p>
-        <h2 class="font-display text-3xl font-semibold md:text-4xl">
-          A Nordic family of drillers.
+  <section class="bg-white">
+    <div class="mx-auto max-w-7xl px-6 py-16">
+      <div class="mb-8 flex items-center gap-3">
+        <BrandChip brand="xdrill" />
+        <h2 class="font-display text-2xl font-semibold md:text-3xl">
+          Exploration, groundwater, wind
         </h2>
       </div>
-      <div class="mt-6 md:mt-0">
-        <p class="text-lg leading-relaxed text-rocky-80">
-          Founded in Mal&aring;, Sweden. Today NORSE Diamond Drilling operates across
-          Scandinavia with a combined fleet of surface, underground, and helicopter-portable
-          rigs. Through X Drill AB we also cover environmental, groundwater, and
-          wind-power drilling from Blattnicksele.
+      <ul class="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+        {
+          xdrillServices.map((svc) => (
+            <li>
+              <a
+                href={`/services/${svc.slug}`}
+                class="group flex h-full flex-col gap-3 border border-light-grey bg-white p-6 transition hover:border-safety-orange hover:shadow-sm"
+              >
+                <h3 class="font-display text-lg font-semibold text-rocky group-hover:text-safety-orange">
+                  {svc.titleEn}
+                </h3>
+                <p class="text-sm leading-relaxed text-rocky-80">{svc.taglineEn}</p>
+                <span class="mt-auto text-sm font-medium text-safety-orange">Learn more &rarr;</span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <section class="border-t border-light-grey bg-rocky text-white">
+    <div class="mx-auto max-w-7xl px-6 py-16 md:grid md:grid-cols-2 md:gap-16">
+      <div>
+        <h2 class="font-display text-3xl font-semibold md:text-4xl">
+          Let&rsquo;s talk drilling.
+        </h2>
+        <p class="mt-4 text-rocky-50">
+          Tell us about the site and scope. We&rsquo;ll come back with rigs, crews, and a
+          realistic schedule.
         </p>
-        <div class="mt-6 flex flex-wrap gap-3">
-          <Button href="/about" variant="secondary" size="sm">About NORSE</Button>
-          <Button href="/group" variant="ghost" size="sm">NORSE Group &rarr;</Button>
-        </div>
+      </div>
+      <div class="mt-6 flex items-start gap-3 md:mt-0">
+        <Button href="/contact" variant="primary">Enquire</Button>
+        <Button href="/about" variant="ghost" size="md">About NORSE &rarr;</Button>
       </div>
     </div>
   </section>

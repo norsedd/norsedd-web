@@ -28,29 +28,46 @@ Process:
 
 ## xdrill.se strategy
 
-**Decision (confirmed 2026-04-23):** option B — keep `xdrill.se` live as a thin
-Swedish-language landing page branded "Part of NORSE Group," with deep links into
-`norsedd.com/sv/services/...`. Canonicals on xdrill.se point to the corresponding
-norsedd.com URLs so ranking signal consolidates without losing the regional domain.
+**Current domain state (discovered 2026-04-23):** `https://www.xdrill.se/` returns
+`301 → https://www.it4u.se/` — pointing at an unrelated Swedish IT hosting company, not
+X Drill content. The last real X Drill snapshot in the Wayback Machine is from 2026-04-21
+and referenced the historical Blattnicksele address (Strandvägen 20). The old WordPress
+is effectively off the air.
 
-Rationale: X Drill has ~5 years of Swedish regional SEO equity on queries like
-*"Odex 76 prospektering Västerbotten"* — dropping the domain would forfeit that
-authority, and Marcus Grahn's regional identity is part of what clients recognize.
+**Decision (confirmed 2026-04-23):** permanent **301 `xdrill.se` → `norsedd.com/sv/services`**.
+Option B (keep xdrill.se as a thin canonical-bearing landing page) is not viable without
+first recovering the domain from the current mis-configured redirect, which isn't worth
+the ongoing maintenance. A single 301 passes most link equity while consolidating the
+entire brand at `norsedd.com`.
 
 Concretely:
 
-| xdrill.se page | New destination (canonical) | Redirect type |
+| Old URL | New destination | Redirect type |
 |---|---|---|
-| `/` | `/` on xdrill.se (keep live) with link to `norsedd.com/sv/companies/xdrill` | none |
-| `/prospektering/` | canonical → `norsedd.com/sv/services/prospektering` | canonical + link |
-| `/vindkraft/` | canonical → `norsedd.com/sv/services/vindkraft` | canonical + link |
-| `/grundvattenror/` | canonical → `norsedd.com/sv/services/grundvattenror` | canonical + link |
-| `/miljo/` | canonical → `norsedd.com/sv/services/miljo` | canonical + link |
-| `/kontakt/` | keep — Marcus Grahn's regional contact point | none |
+| `xdrill.se/*` (apex) | `norsedd.com/sv/services` | 301 permanent |
+| `www.xdrill.se/*` | `norsedd.com/sv/services` | 301 permanent |
+| `xdrill.se/prospektering` | `norsedd.com/sv/services/prospektering` | 301 (preserve path if possible) |
+| `xdrill.se/vindkraft` | `norsedd.com/sv/services/vindkraft` | 301 |
+| `xdrill.se/grundvattenror` | `norsedd.com/sv/services/grundvattenror` | 301 |
+| `xdrill.se/miljo` | `norsedd.com/sv/services/miljo` | 301 |
 
-The xdrill.se WordPress stays under Marcus's control for now. After 12 months of stable
-canonical consolidation, we can revisit a full 301 to `/sv/companies/xdrill` if authority
-has fully transferred.
+**Implementation steps** (outside this repo — done at DNS / hosting layer):
+
+1. Regain control of `xdrill.se` at the registrar (confirm owner contact; it's currently
+   pointing hosting records at it4u.se's Apache server).
+2. Either (a) point DNS at a small host that serves path-preserving 301s, or
+   (b) park the domain on Vercel (add domain to this project, then set
+   `{"redirects":[{"source":"/:path*","destination":"https://www.norsedd.com/sv/services/:path*","permanent":true}]}`
+   in `vercel.json` — simplest, leverages infra we already have).
+3. After 301 is live, submit xdrill.se in Google Search Console's *Change of Address*
+   tool against norsedd.com to accelerate signal consolidation.
+4. Monitor Search Console for xdrill.se errors; leave the 301 in place permanently — the
+   301 only needs to return successfully, so it can stay indefinitely at zero cost.
+
+**X Drill content on norsedd.com:** the four X Drill services (prospektering, vindkraft,
+grundvattenrör, miljö) are migrated verbatim in Swedish with EN translations, rendered
+at `/sv/services/{slug}` and `/services/{slug}`. Page-level `rel="alternate"` links tie
+the locale pair together.
 
 ## DNS
 

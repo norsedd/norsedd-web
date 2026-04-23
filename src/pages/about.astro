@@ -1,25 +1,54 @@
 ---
 import BaseLayout from '~/layouts/BaseLayout.astro';
 import Button from '~/components/ui/Button.astro';
+import { getCollection } from 'astro:content';
+
+const team = (await getCollection('team'))
+  .filter((m) => m.data.locale === 'en')
+  .sort((a, b) => a.data.order - b.data.order);
+
+const fiveCs = [
+  {
+    c: 'Communicative',
+    copy: 'Transparent and open communication is fundamental to our operations. We maintain 24/7 direct contact between clients and operators.',
+  },
+  {
+    c: 'Competent',
+    copy: 'With experienced geologists, specialists, and lead operators, we design safe, cost-efficient, and fit-for-purpose drilling campaigns.',
+  },
+  {
+    c: 'Caring',
+    copy: 'We recognise the impact of diamond-core drilling and actively work to minimise disruption.',
+  },
+  {
+    c: 'Capable',
+    copy: 'From deep directional drilling to heli-portable campaigns, our team has the expertise to handle complex projects.',
+  },
+  {
+    c: 'Competitive',
+    copy: "We deliver high-quality drilling solutions at a fair price, tailored to each project's unique requirements.",
+  },
+];
 ---
 
 <BaseLayout
   locale="en"
   title="About NORSE Diamond Drilling"
-  description="Nordic core drilling specialists based in Mal\u00e5, Sweden. Founded by drillers, built on the five C's."
+  description="Operational since 2022 and based in Mal\u00e5, Sweden. A Nordic diamond-core drilling specialist built on five C's."
   path={Astro.url.pathname}
 >
   <section class="border-b border-light-grey bg-white">
     <div class="mx-auto max-w-7xl px-6 py-20">
       <p class="mb-4 text-xs font-medium uppercase tracking-[0.2em] text-safety-orange">About</p>
       <h1 class="max-w-3xl font-display text-4xl font-semibold leading-tight md:text-5xl">
-        Founded by drillers. Built on five C&rsquo;s.
+        Nordic diamond-core drilling, built on five C&rsquo;s.
       </h1>
       <p class="mt-6 max-w-3xl text-lg leading-relaxed text-rocky-80">
-        NORSE Diamond Drilling is a Nordic core drilling specialist with HQ in Mal&aring;, Sweden,
-        and operations across Scandinavia. Together with our subsidiary X Drill AB we cover
-        the full spectrum of Nordic drilling &mdash; surface, underground, helicopter-portable,
-        exploration, groundwater, and wind-power services.
+        Operational since 2022, NORSE Diamond Drilling is a leading Nordic drilling company,
+        specialising in diamond core drilling across Sweden, Norway, and Finland. With deep
+        roots in Nordic craftsmanship, we combine technical expertise, rigorous safety
+        standards, and sustainable practices to deliver high-precision exploration drilling in
+        even the most challenging environments.
       </p>
     </div>
   </section>
@@ -27,14 +56,12 @@ import Button from '~/components/ui/Button.astro';
   <section class="bg-light-grey/30">
     <div class="mx-auto max-w-7xl px-6 py-20">
       <h2 class="mb-10 font-display text-3xl font-semibold md:text-4xl">Our five C&rsquo;s</h2>
-      <ul class="grid gap-6 md:grid-cols-3 lg:grid-cols-5">
+      <ul class="grid gap-6 md:grid-cols-2 lg:grid-cols-5">
         {
-          ['Clients', 'Core', 'Care', 'Craftsmanship', 'Commitment'].map((c) => (
+          fiveCs.map(({ c, copy }) => (
             <li class="border-l-4 border-safety-orange bg-white p-6">
               <p class="font-display text-xl font-semibold text-rocky">{c}</p>
-              <p class="mt-2 text-sm leading-relaxed text-rocky-80">
-                Verbatim copy from the five-C&rsquo;s statement lands in the content-migration commit.
-              </p>
+              <p class="mt-3 text-sm leading-relaxed text-rocky-80">{copy}</p>
             </li>
           ))
         }
@@ -44,34 +71,58 @@ import Button from '~/components/ui/Button.astro';
 
   <section class="border-t border-light-grey bg-white">
     <div class="mx-auto max-w-7xl px-6 py-20">
-      <h2 class="mb-10 font-display text-3xl font-semibold md:text-4xl">Team</h2>
-      <p class="max-w-2xl text-rocky-80">
-        Twelve people on the drill floor, in the office, and on the road. Full roster with roles
-        and contact details lands in the team-content commit.
-      </p>
-      <div class="mt-8">
+      <h2 class="mb-10 font-display text-3xl font-semibold md:text-4xl">The team</h2>
+      <ul class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        {
+          team.map((m) => (
+            <li class="border border-light-grey bg-white p-6">
+              <p class="font-display text-lg font-semibold text-rocky">{m.data.name}</p>
+              <p class="text-sm uppercase tracking-wider text-safety-orange">{m.data.role}</p>
+              <div class="mt-4 space-y-1 text-sm text-rocky-80">
+                {m.data.email && (
+                  <p>
+                    <a href={`mailto:${m.data.email}`} class="hover:text-safety-orange">
+                      {m.data.email}
+                    </a>
+                  </p>
+                )}
+                {m.data.phone && <p class="tabular-nums">{m.data.phone}</p>}
+              </div>
+            </li>
+          ))
+        }
+      </ul>
+      <div class="mt-10">
         <Button href="/contact" variant="secondary">Contact the team</Button>
       </div>
+    </div>
+  </section>
+
+  <section class="bg-light-grey/30">
+    <div class="mx-auto max-w-7xl px-6 py-16">
+      <h2 class="mb-6 font-display text-2xl font-semibold md:text-3xl">Memberships</h2>
+      <ul class="flex flex-wrap gap-3 text-sm">
+        <li class="border border-rocky/20 bg-white px-4 py-2 text-rocky">Mining Finland</li>
+        <li class="border border-rocky/20 bg-white px-4 py-2 text-rocky">Svemin</li>
+      </ul>
     </div>
   </section>
 
   <section class="bg-rocky text-white">
     <div class="mx-auto max-w-7xl px-6 py-16 md:grid md:grid-cols-2 md:gap-16">
       <div>
-        <h2 class="font-display text-3xl font-semibold md:text-4xl">Locations</h2>
+        <h2 class="font-display text-3xl font-semibold md:text-4xl">Location</h2>
       </div>
-      <ul class="mt-6 space-y-6 md:mt-0">
-        <li>
-          <p class="text-xs font-semibold uppercase tracking-wider text-safety-orange">HQ</p>
-          <p class="mt-1 text-lg">NORSE Diamond Drilling AS</p>
-          <p class="text-rocky-50">Fabriksgatan 4, 939 32 Mal&aring;, Sweden</p>
-        </li>
-        <li>
-          <p class="text-xs font-semibold uppercase tracking-wider text-safety-orange">X Drill AB</p>
-          <p class="mt-1 text-lg">Blattnicksele, Sweden</p>
-          <p class="text-rocky-50">Full address lands in the X&nbsp;Drill migration commit.</p>
-        </li>
-      </ul>
+      <div class="mt-6 md:mt-0">
+        <p class="text-xs font-semibold uppercase tracking-wider text-safety-orange">
+          NORSE Group &amp; X Drill HQ
+        </p>
+        <p class="mt-2 text-lg">Fabriksgatan 4</p>
+        <p class="text-rocky-50">939 32 Mal&aring;, Sweden</p>
+        <p class="mt-3 text-sm text-rocky-50">
+          Both NORSE Diamond Drilling AS and X Drill AB operate from this address.
+        </p>
+      </div>
     </div>
   </section>
 </BaseLayout>
