@@ -1,0 +1,33 @@
+---
+import BaseLayout from '~/layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  locale="en"
+  title="Equipment \u2014 NORSE Diamond Drilling"
+  description="Our Nordic drilling fleet: surface, underground, helicopter-portable, and X Drill Odex rigs. Full fleet catalog lands in a subsequent commit."
+  path={Astro.url.pathname}
+>
+  <section class="border-b border-light-grey bg-white">
+    <div class="mx-auto max-w-7xl px-6 py-20">
+      <p class="mb-4 text-xs font-medium uppercase tracking-[0.2em] text-safety-orange">Equipment</p>
+      <h1 class="max-w-3xl font-display text-4xl font-semibold leading-tight md:text-5xl">
+        Built for Nordic ground.
+      </h1>
+      <p class="mt-6 max-w-3xl text-lg leading-relaxed text-rocky-80">
+        Our fleet covers surface diamond core rigs, underground drills, helicopter-portable
+        modular units, and X Drill Odex 76 mm sampling rigs. The public fleet catalog lands in
+        a subsequent commit &mdash; rigs, specs, and photos per unit.
+      </p>
+    </div>
+  </section>
+
+  <section class="bg-light-grey/30">
+    <div class="mx-auto max-w-7xl px-6 py-20">
+      <p class="text-rocky-80">
+        Placeholder &mdash; equipment entries will be backed by the
+        <code class="rounded bg-white px-1 py-0.5">equipment</code> content collection.
+      </p>
+    </div>
+  </section>
+</BaseLayout>

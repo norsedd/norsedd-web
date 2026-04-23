@@ -1,0 +1,59 @@
+---
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import BrandChip from '~/components/ui/BrandChip.astro';
+import Button from '~/components/ui/Button.astro';
+---
+
+<BaseLayout
+  locale="en"
+  title="NORSE Group \u2014 companies"
+  description="NORSE Diamond Drilling and subsidiary X Drill AB. One Nordic group, two brands, full-spectrum drilling."
+  path={Astro.url.pathname}
+>
+  <section class="border-b border-light-grey bg-white">
+    <div class="mx-auto max-w-7xl px-6 py-20">
+      <p class="mb-4 text-xs font-medium uppercase tracking-[0.2em] text-safety-orange">
+        NORSE Group
+      </p>
+      <h1 class="max-w-3xl font-display text-4xl font-semibold leading-tight md:text-5xl">
+        One group. Two brands. Full-spectrum drilling.
+      </h1>
+      <p class="mt-6 max-w-3xl text-lg leading-relaxed text-rocky-80">
+        NORSE Diamond Drilling AS owns and operates alongside X Drill AB. Together we cover
+        diamond core (surface, underground, heli-portable) under the NORSE brand, and
+        exploration sampling, groundwater, and wind-power services under the X Drill brand.
+      </p>
+    </div>
+  </section>
+
+  <section class="bg-light-grey/30">
+    <div class="mx-auto max-w-7xl px-6 py-20">
+      <div class="grid gap-8 md:grid-cols-2">
+        <article class="border-t-4 border-safety-orange bg-white p-8">
+          <div class="mb-4"><BrandChip brand="norse" /></div>
+          <h2 class="font-display text-2xl font-semibold">NORSE Diamond Drilling AS</h2>
+          <p class="mt-4 text-rocky-80">
+            Diamond core drilling across Sweden, Norway, and Finland. Surface, underground, and
+            helicopter-portable. HQ in Mal&aring;, Sweden.
+          </p>
+          <div class="mt-6">
+            <Button href="/services" variant="secondary" size="sm">NORSE services</Button>
+          </div>
+        </article>
+
+        <article class="border-t-4 border-rocky bg-white p-8">
+          <div class="mb-4"><BrandChip brand="xdrill" /></div>
+          <h2 class="font-display text-2xl font-semibold">X Drill AB</h2>
+          <p class="mt-4 text-rocky-80">
+            Exploration sampling (Odex 76 mm), groundwater, wind-power services, and
+            environmental drilling from Blattnicksele, Sweden. Public-facing site at
+            <a href="https://www.xdrill.se" class="font-medium text-rocky hover:text-safety-orange">xdrill.se</a>.
+          </p>
+          <div class="mt-6">
+            <Button href="/services#xdrill" variant="secondary" size="sm">X Drill services</Button>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

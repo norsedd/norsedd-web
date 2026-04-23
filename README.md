@@ -4,6 +4,9 @@ Static marketing site for [NORSE Diamond Drilling](https://www.norsedd.com) and 
 subsidiary X Drill AB. Multilingual (EN / SV / NO / FI), content-in-repo, deployed to
 Vercel.
 
+- **Production (post-cutover):** https://www.norsedd.com
+- **Vercel preview (current live):** https://norsedd-web.vercel.app
+
 ## Stack
 
 - **Astro 6** — static site generator, zero JS by default

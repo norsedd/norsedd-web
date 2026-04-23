@@ -1,0 +1,56 @@
+---
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import BrandChip from '~/components/ui/BrandChip.astro';
+import Button from '~/components/ui/Button.astro';
+import { services, type ServiceEntry } from '~/data/services';
+
+export function getStaticPaths() {
+  return services.map((svc) => ({
+    params: { service: svc.slug },
+    props: { svc },
+  }));
+}
+
+interface Props {
+  svc: ServiceEntry;
+}
+
+const { svc } = Astro.props;
+---
+
+<BaseLayout
+  locale="en"
+  title={`${svc.titleEn} \u2014 NORSE Diamond Drilling`}
+  description={svc.taglineEn}
+  path={Astro.url.pathname}
+>
+  <article class="border-b border-light-grey bg-white">
+    <div class="mx-auto max-w-4xl px-6 py-20">
+      <nav class="mb-6 text-sm text-rocky-50" aria-label="Breadcrumb">
+        <a href="/services" class="hover:text-safety-orange">Services</a>
+        <span class="mx-2" aria-hidden="true">/</span>
+        <span class="text-rocky">{svc.titleEn}</span>
+      </nav>
+      <div class="mb-4"><BrandChip brand={svc.brand} /></div>
+      <h1 class="font-display text-4xl font-semibold leading-tight md:text-5xl">
+        {svc.titleEn}
+      </h1>
+      <p class="mt-6 text-lg leading-relaxed text-rocky-80">{svc.taglineEn}</p>
+    </div>
+  </article>
+
+  <section class="bg-light-grey/30">
+    <div class="mx-auto max-w-4xl px-6 py-20">
+      <h2 class="font-display text-2xl font-semibold md:text-3xl">Detailed service content</h2>
+      <p class="mt-4 text-rocky-80">
+        Full service narrative, certifications, reference clients, specs, and contact person land
+        in the content-migration commit. Each service will be backed by an MDX file in
+        <code class="rounded bg-white px-1 py-0.5 text-sm">src/content/services/en/{svc.slug}.mdx</code>.
+      </p>
+      <div class="mt-8 flex flex-wrap gap-3">
+        <Button href="/contact" variant="primary">Request a quote</Button>
+        <Button href="/services" variant="ghost">&larr; All services</Button>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

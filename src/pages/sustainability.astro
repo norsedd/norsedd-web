@@ -1,0 +1,53 @@
+---
+import BaseLayout from '~/layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  locale="en"
+  title="Sustainability & HSEQ \u2014 NORSE Diamond Drilling"
+  description="How NORSE and X Drill approach safety, health, environment, and quality across Nordic drilling operations."
+  path={Astro.url.pathname}
+>
+  <section class="border-b border-light-grey bg-aquatic text-white">
+    <div class="mx-auto max-w-7xl px-6 py-20">
+      <p class="mb-4 text-xs font-medium uppercase tracking-[0.2em] text-white/80">
+        Sustainability &amp; HSEQ
+      </p>
+      <h1 class="max-w-3xl font-display text-4xl font-semibold leading-tight md:text-5xl">
+        Clean sites. Safe crews. Honest numbers.
+      </h1>
+      <p class="mt-6 max-w-3xl text-lg leading-relaxed text-white/90">
+        Drilling happens in sensitive landscapes. Our standard is that a site should look the same
+        when we leave as when we arrived &mdash; and that no one gets hurt getting there.
+      </p>
+    </div>
+  </section>
+
+  <section class="bg-white">
+    <div class="mx-auto max-w-7xl px-6 py-20">
+      <div class="grid gap-8 md:grid-cols-3">
+        <div>
+          <h2 class="font-display text-xl font-semibold">Environment</h2>
+          <p class="mt-3 text-rocky-80">
+            Wide rubber tracks, environmental hydraulic oils, and complete site restoration after
+            every X Drill job. Policy, certifications, and figures land with the content migration.
+          </p>
+        </div>
+        <div>
+          <h2 class="font-display text-xl font-semibold">Safety</h2>
+          <p class="mt-3 text-rocky-80">
+            GWO, ESA, SSG Heta arbeten certifications for the X Drill wind-power crews. NORSE
+            drilling crew certifications listed in full on the content migration.
+          </p>
+        </div>
+        <div>
+          <h2 class="font-display text-xl font-semibold">Quality</h2>
+          <p class="mt-3 text-rocky-80">
+            Traceable core, chain-of-custody on samples, reporting aligned with CIM/NI 43-101
+            where applicable. Full QA/QC framework lands with the content migration.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

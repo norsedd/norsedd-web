@@ -1,0 +1,82 @@
+---
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import BrandChip from '~/components/ui/BrandChip.astro';
+import { norseServices, xdrillServices } from '~/data/services';
+---
+
+<BaseLayout
+  locale="en"
+  title="Services \u2014 NORSE Diamond Drilling"
+  description="Full-spectrum Nordic drilling. Surface, underground, helicopter-portable core drilling under the NORSE brand, plus exploration, groundwater, wind-power services via X Drill AB."
+  path={Astro.url.pathname}
+>
+  <section class="border-b border-light-grey bg-white">
+    <div class="mx-auto max-w-7xl px-6 py-20">
+      <p class="mb-4 text-xs font-medium uppercase tracking-[0.2em] text-safety-orange">Services</p>
+      <h1 class="max-w-3xl font-display text-4xl font-semibold leading-tight md:text-5xl">
+        Full-spectrum Nordic drilling.
+      </h1>
+      <p class="mt-6 max-w-3xl text-lg leading-relaxed text-rocky-80">
+        NORSE covers the core drilling work &mdash; diamond core in surface, underground, and
+        helicopter-portable configurations. X Drill AB covers exploration sampling, groundwater,
+        wind-power services, and environmentally sensitive sites.
+      </p>
+    </div>
+  </section>
+
+  <section class="bg-light-grey/30">
+    <div class="mx-auto max-w-7xl px-6 py-16">
+      <div class="mb-8 flex items-center gap-3">
+        <BrandChip brand="norse" />
+        <h2 class="font-display text-2xl font-semibold md:text-3xl">Diamond core drilling</h2>
+      </div>
+      <ul class="grid gap-4 md:grid-cols-3">
+        {
+          norseServices.map((svc) => (
+            <li>
+              <a
+                href={`/services/${svc.slug}`}
+                class="group flex h-full flex-col gap-3 border border-light-grey bg-white p-6 transition hover:border-safety-orange hover:shadow-sm"
+              >
+                <h3 class="font-display text-xl font-semibold text-rocky group-hover:text-safety-orange">
+                  {svc.titleEn}
+                </h3>
+                <p class="text-sm leading-relaxed text-rocky-80">{svc.taglineEn}</p>
+                <span class="mt-auto text-sm font-medium text-safety-orange">Learn more &rarr;</span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <section class="bg-white">
+    <div class="mx-auto max-w-7xl px-6 py-16">
+      <div class="mb-8 flex items-center gap-3">
+        <BrandChip brand="xdrill" />
+        <h2 class="font-display text-2xl font-semibold md:text-3xl">
+          Exploration, groundwater, wind
+        </h2>
+      </div>
+      <ul class="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+        {
+          xdrillServices.map((svc) => (
+            <li>
+              <a
+                href={`/services/${svc.slug}`}
+                class="group flex h-full flex-col gap-3 border border-light-grey bg-white p-6 transition hover:border-safety-orange hover:shadow-sm"
+              >
+                <h3 class="font-display text-lg font-semibold text-rocky group-hover:text-safety-orange">
+                  {svc.titleEn}
+                </h3>
+                <p class="text-sm leading-relaxed text-rocky-80">{svc.taglineEn}</p>
+                <span class="mt-auto text-sm font-medium text-safety-orange">Learn more &rarr;</span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+</BaseLayout>

@@ -1,0 +1,54 @@
+---
+import { locales, localeNames, localePrefix, defaultLocale, type Locale } from '~/i18n/locales';
+
+interface Props {
+  currentLocale: Locale;
+  /** Path within the current locale (without the locale prefix), e.g. "/about". */
+  path?: string;
+}
+
+const { currentLocale, path = '/' } = Astro.props;
+
+function urlFor(locale: Locale): string {
+  const prefix = localePrefix(locale);
+  if (path === '/' || path === '') return prefix || '/';
+  // Non-home paths only exist in English for now — switching to sv/no/fi from
+  // any non-home page routes to that locale's home to avoid 404s. This is a
+  // known IA-commit limitation; the content-migration commit wires per-locale
+  // page variants via content collections.
+  return locale === defaultLocale ? path : prefix || '/';
+}
+---
+
+<details class="group relative">
+  <summary
+    class="flex cursor-pointer list-none items-center gap-1 px-3 py-2 text-sm font-medium text-rocky-80 hover:text-safety-orange"
+    aria-label="Select language"
+  >
+    <span aria-hidden="true">🌐</span>
+    <span>{localeNames[currentLocale]}</span>
+    <span class="text-xs" aria-hidden="true">▾</span>
+  </summary>
+  <ul
+    role="menu"
+    class="absolute right-0 top-full z-30 mt-1 min-w-[10rem] border border-light-grey bg-white py-2 shadow-lg"
+  >
+    {
+      locales.map((loc) => (
+        <li role="none">
+          <a
+            role="menuitem"
+            href={urlFor(loc)}
+            class:list={[
+              'block px-4 py-1.5 text-sm hover:bg-light-grey',
+              loc === currentLocale ? 'font-semibold text-safety-orange' : 'text-rocky',
+            ]}
+            hreflang={loc}
+          >
+            {localeNames[loc]}
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+</details>

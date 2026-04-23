@@ -1,0 +1,30 @@
+---
+import BaseLayout from '~/layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  locale="en"
+  title="Case studies \u2014 NORSE Diamond Drilling"
+  description="Project reports from NORSE and X Drill across the Nordics. Publishing schedule lands in the content-migration commit."
+  path={Astro.url.pathname}
+>
+  <section class="border-b border-light-grey bg-white">
+    <div class="mx-auto max-w-7xl px-6 py-20">
+      <p class="mb-4 text-xs font-medium uppercase tracking-[0.2em] text-safety-orange">Case studies</p>
+      <h1 class="max-w-3xl font-display text-4xl font-semibold leading-tight md:text-5xl">
+        Projects from across the Nordics.
+      </h1>
+      <p class="mt-6 max-w-3xl text-lg leading-relaxed text-rocky-80">
+        Selected project reports from NORSE and X Drill. First wave of case studies lands in the
+        content-migration commit &mdash; each entry backed by an MDX file in
+        <code class="rounded bg-light-grey px-1 py-0.5">src/content/case-studies/en/</code>.
+      </p>
+    </div>
+  </section>
+
+  <section class="bg-light-grey/30">
+    <div class="mx-auto max-w-7xl px-6 py-20">
+      <p class="text-rocky-80">Coming soon.</p>
+    </div>
+  </section>
+</BaseLayout>

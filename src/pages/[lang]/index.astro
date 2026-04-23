@@ -1,5 +1,9 @@
 ---
 import BaseLayout from '~/layouts/BaseLayout.astro';
+import Button from '~/components/ui/Button.astro';
+import BrandChip from '~/components/ui/BrandChip.astro';
+import { services } from '~/data/services';
+import { t } from '~/i18n/ui';
 import type { Locale } from '~/i18n/locales';
 
 export function getStaticPaths() {
@@ -12,42 +16,68 @@ export function getStaticPaths() {
 
 const { lang } = Astro.params;
 const locale = lang as Locale;
+const strings = t(locale);
 
 const headlines: Record<Locale, string> = {
-  en: "Extract Earth's Potential With NORSE.",
-  sv: 'Frigör jordens potential med NORSE.',
-  no: 'Frigjør jordens potensial med NORSE.',
+  en: "Extract Earth's potential with NORSE.",
+  sv: 'Frig\u00f6r jordens potential med NORSE.',
+  no: 'Frigj\u00f8r jordens potensial med NORSE.',
   fi: 'Vapauta maan potentiaali NORSE:n kanssa.',
 };
 
-const blurbs: Record<Locale, string> = {
-  en: 'Scaffold online. Full localized content landing in subsequent commits.',
-  sv: 'Ställningen är uppe. Fullständigt svenskt innehåll kommer i senare commits.',
-  no: 'Stillaset er på plass. Fullstendig norsk innhold kommer i senere commits.',
-  fi: 'Runko pystyssä. Suomenkielinen sisältö tulee myöhemmissä committeissa.',
+const intros: Record<Locale, string> = {
+  en: 'Core drilling across Sweden, Norway, and Finland \u2014 surface, underground, and helicopter-portable.',
+  sv: 'K\u00e4rnborrning i Sverige, Norge och Finland \u2014 yt-, underjords- och helikopterburen borrning.',
+  no: 'Kjerneboring i Sverige, Norge og Finland \u2014 overflate-, underjords- og helikopterb\u00e5ren boring.',
+  fi: 'Ydinkairausta Ruotsissa, Norjassa ja Suomessa \u2014 pinta-, maanalainen ja helikopterikuljetettava kalusto.',
 };
 ---
 
 <BaseLayout
   locale={locale}
-  title={`NORSE Diamond Drilling — ${locale.toUpperCase()}`}
-  description="NORSE Diamond Drilling — Nordic core drilling specialists."
+  title={`NORSE Diamond Drilling \u2014 ${locale.toUpperCase()}`}
+  description="NORSE Diamond Drilling \u2014 Nordic core drilling specialists."
+  path={Astro.url.pathname}
+  showTranslationBanner={true}
 >
-  <main class="mx-auto flex min-h-dvh max-w-3xl flex-col justify-center gap-6 px-6 py-24">
-    <p class="text-xs font-medium tracking-[0.2em] text-safety-orange uppercase">
-      NORSE Diamond Drilling
-    </p>
-    <h1 class="text-display-lg font-semibold leading-[1.05]">
-      {headlines[locale]}
-    </h1>
-    <p class="text-lg text-rocky-80">
-      {blurbs[locale]}
-    </p>
-    <nav class="mt-4 flex gap-4 text-sm" aria-label="Language switcher">
-      <a class="underline underline-offset-4 hover:text-safety-orange" href="/">English</a>
-      {locale !== 'sv' && <a class="underline underline-offset-4 hover:text-safety-orange" href="/sv">Svenska</a>}
-      {locale !== 'no' && <a class="underline underline-offset-4 hover:text-safety-orange" href="/no">Norsk</a>}
-      {locale !== 'fi' && <a class="underline underline-offset-4 hover:text-safety-orange" href="/fi">Suomi</a>}
-    </nav>
-  </main>
+  <section class="border-b border-light-grey bg-white">
+    <div class="mx-auto max-w-7xl px-6 py-20 md:py-28">
+      <p class="mb-6 text-xs font-medium uppercase tracking-[0.2em] text-safety-orange">
+        NORSE Diamond Drilling
+      </p>
+      <h1 class="max-w-4xl font-display text-4xl font-semibold leading-[1.05] md:text-6xl">
+        {headlines[locale]}
+      </h1>
+      <p class="mt-6 max-w-2xl text-lg leading-relaxed text-rocky-80">
+        {intros[locale]}
+      </p>
+      <div class="mt-8 flex flex-wrap gap-3">
+        <Button href={`/${locale}/contact`} variant="primary">{strings.cta.requestQuote}</Button>
+        <Button href={`/${locale}/services`} variant="secondary">{strings.cta.viewServices}</Button>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-light-grey/30">
+    <div class="mx-auto max-w-7xl px-6 py-20">
+      <p class="mb-2 text-xs font-semibold uppercase tracking-wider text-rocky-50">
+        {strings.nav.services}
+      </p>
+      <h2 class="mb-10 font-display text-3xl font-semibold md:text-4xl">
+        Full-spectrum Nordic drilling
+      </h2>
+
+      <ul class="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+        {
+          services.map((svc) => (
+            <li class="flex h-full flex-col gap-3 border border-light-grey bg-white p-6">
+              <BrandChip brand={svc.brand} />
+              <h3 class="font-display text-xl font-semibold text-rocky">{svc.titleEn}</h3>
+              <p class="text-sm leading-relaxed text-rocky-80">{svc.taglineEn}</p>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
 </BaseLayout>

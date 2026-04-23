@@ -1,0 +1,81 @@
+---
+import { defaultLocale, localePrefix, type Locale } from '~/i18n/locales';
+import { t } from '~/i18n/ui';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const strings = t(locale);
+const p = localePrefix(locale);
+function L(route: string): string {
+  if (locale === defaultLocale) return route;
+  return `${p}${route}`;
+}
+const year = new Date().getFullYear();
+---
+
+<footer class="mt-24 border-t border-light-grey bg-white">
+  <div class="mx-auto max-w-7xl px-6 py-12">
+    <!-- Group/companies block -->
+    <div class="mb-12 border-l-4 border-safety-orange bg-light-grey/40 p-6">
+      <p class="mb-2 text-xs font-semibold uppercase tracking-[0.2em] text-safety-orange">
+        NORSE Group
+      </p>
+      <p class="max-w-3xl text-base leading-relaxed text-rocky">
+        {strings.footer.groupBlurb}
+      </p>
+      <a
+        href={L('/group')}
+        class="mt-3 inline-flex items-center gap-1 text-sm font-medium text-rocky hover:text-safety-orange"
+      >
+        Learn about the group →
+      </a>
+    </div>
+
+    <div class="grid gap-10 md:grid-cols-4">
+      <div class="md:col-span-2">
+        <img
+          src="/logos/norse-wordmark-black.svg"
+          alt="NORSE Diamond Drilling"
+          width="160"
+          height="36"
+          class="h-9 w-auto"
+        />
+        <address class="mt-4 not-italic text-sm text-rocky-80">
+          <strong class="text-rocky">NORSE Diamond Drilling AS</strong><br />
+          Fabriksgatan 4, 939 32 Malå<br />
+          Sweden<br />
+          <a href="mailto:contact@norsedd.com" class="hover:text-safety-orange">contact@norsedd.com</a>
+        </address>
+      </div>
+
+      <div>
+        <h2 class="mb-3 text-sm font-semibold uppercase tracking-wider text-rocky">Company</h2>
+        <ul class="space-y-2 text-sm text-rocky-80">
+          <li><a href={L('/about')} class="hover:text-safety-orange">{strings.nav.about}</a></li>
+          <li><a href={L('/group')} class="hover:text-safety-orange">NORSE Group</a></li>
+          <li><a href={L('/sustainability')} class="hover:text-safety-orange">{strings.nav.sustainability}</a></li>
+          <li><a href={L('/careers')} class="hover:text-safety-orange">{strings.nav.careers}</a></li>
+          <li><a href={L('/contact')} class="hover:text-safety-orange">{strings.nav.contact}</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h2 class="mb-3 text-sm font-semibold uppercase tracking-wider text-rocky">Services</h2>
+        <ul class="space-y-2 text-sm text-rocky-80">
+          <li><a href={L('/services')} class="hover:text-safety-orange">All services</a></li>
+          <li><a href={L('/services/surface-drilling')} class="hover:text-safety-orange">Surface drilling</a></li>
+          <li><a href={L('/services/underground-drilling')} class="hover:text-safety-orange">Underground drilling</a></li>
+          <li><a href={L('/services/helicopter-portable')} class="hover:text-safety-orange">Helicopter-portable</a></li>
+          <li><a href={L('/services/prospektering')} class="hover:text-safety-orange">Exploration (X Drill)</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="mt-12 border-t border-light-grey pt-6 text-xs text-rocky-50">
+      © {year} Norse Diamond Drilling AS. {strings.footer.rights}
+    </div>
+  </div>
+</footer>

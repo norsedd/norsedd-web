@@ -1,0 +1,175 @@
+---
+import LangSwitcher from './LangSwitcher.astro';
+import BrandChip from '~/components/ui/BrandChip.astro';
+import { defaultLocale, localePrefix, type Locale } from '~/i18n/locales';
+import { t } from '~/i18n/ui';
+import { norseServices, xdrillServices } from '~/data/services';
+
+interface Props {
+  locale: Locale;
+  /** Current path without the locale prefix, e.g. "/about". */
+  path?: string;
+}
+
+const { locale, path = '/' } = Astro.props;
+const nav = t(locale).nav;
+const p = localePrefix(locale);
+const home = p || '/';
+
+/** Prefix a path with the current locale. For the default locale, strip any
+ *  leading "/" prefix so we emit clean paths like "/about", "/services". */
+function L(route: string): string {
+  if (locale === defaultLocale) return route;
+  return `${p}${route}`;
+}
+---
+
+<header class="sticky top-0 z-40 border-b border-light-grey bg-white/95 backdrop-blur">
+  <div class="mx-auto flex max-w-7xl items-center justify-between gap-6 px-6 py-4">
+    <a href={home} class="flex items-center gap-2" aria-label="NORSE Diamond Drilling — home">
+      <img
+        src="/logos/norse-wordmark-black.svg"
+        alt="NORSE Diamond Drilling"
+        width="140"
+        height="32"
+        class="h-8 w-auto"
+      />
+    </a>
+
+    <!-- Desktop nav -->
+    <nav aria-label="Primary" class="hidden items-center gap-1 lg:flex">
+      <a href={L('/about')} class="px-3 py-2 text-sm font-medium text-rocky hover:text-safety-orange">{nav.about}</a>
+
+      <!-- Services mega-menu -->
+      <details class="group relative">
+        <summary
+          class="flex cursor-pointer list-none items-center gap-1 px-3 py-2 text-sm font-medium text-rocky hover:text-safety-orange"
+          aria-haspopup="true"
+        >
+          {nav.services}
+          <span class="text-xs transition-transform group-open:rotate-180" aria-hidden="true">▾</span>
+        </summary>
+
+        <div
+          role="menu"
+          class="absolute left-1/2 top-full z-30 mt-0 w-[640px] -translate-x-1/2 border border-light-grey bg-white p-6 shadow-xl"
+        >
+          <div class="grid grid-cols-2 gap-6">
+            <div>
+              <div class="mb-3 flex items-center gap-2">
+                <BrandChip brand="norse" />
+                <p class="text-xs font-semibold uppercase tracking-wider text-rocky-50">
+                  Diamond core drilling
+                </p>
+              </div>
+              <ul class="space-y-1">
+                {
+                  norseServices.map((svc) => (
+                    <li>
+                      <a
+                        href={L(`/services/${svc.slug}`)}
+                        class="group/item block rounded-sm px-2 py-2 hover:bg-light-grey"
+                      >
+                        <div class="font-medium text-rocky group-hover/item:text-safety-orange">
+                          {svc.titleEn}
+                        </div>
+                        <div class="text-xs text-rocky-80">{svc.taglineEn}</div>
+                      </a>
+                    </li>
+                  ))
+                }
+              </ul>
+            </div>
+
+            <div>
+              <div class="mb-3 flex items-center gap-2">
+                <BrandChip brand="xdrill" />
+                <p class="text-xs font-semibold uppercase tracking-wider text-rocky-50">
+                  Exploration, groundwater, wind
+                </p>
+              </div>
+              <ul class="space-y-1">
+                {
+                  xdrillServices.map((svc) => (
+                    <li>
+                      <a
+                        href={L(`/services/${svc.slug}`)}
+                        class="group/item block rounded-sm px-2 py-2 hover:bg-light-grey"
+                      >
+                        <div class="font-medium text-rocky group-hover/item:text-safety-orange">
+                          {svc.titleEn}
+                        </div>
+                        <div class="text-xs text-rocky-80">{svc.taglineEn}</div>
+                      </a>
+                    </li>
+                  ))
+                }
+              </ul>
+            </div>
+          </div>
+
+          <a
+            href={L('/services')}
+            class="mt-4 inline-flex items-center gap-1 text-sm font-medium text-safety-orange hover:text-safety-orange-80"
+          >
+            All services →
+          </a>
+        </div>
+      </details>
+
+      <a href={L('/equipment')} class="px-3 py-2 text-sm font-medium text-rocky hover:text-safety-orange">{nav.equipment}</a>
+      <a href={L('/case-studies')} class="px-3 py-2 text-sm font-medium text-rocky hover:text-safety-orange">{nav.caseStudies}</a>
+      <a href={L('/sustainability')} class="px-3 py-2 text-sm font-medium text-rocky hover:text-safety-orange">{nav.sustainability}</a>
+      <a href={L('/careers')} class="px-3 py-2 text-sm font-medium text-rocky hover:text-safety-orange">{nav.careers}</a>
+      <a href={L('/contact')} class="px-3 py-2 text-sm font-medium text-rocky hover:text-safety-orange">{nav.contact}</a>
+    </nav>
+
+    <div class="flex items-center gap-2">
+      <LangSwitcher currentLocale={locale} path={path} />
+
+      <!-- Mobile menu toggle -->
+      <details class="lg:hidden">
+        <summary
+          class="flex cursor-pointer list-none items-center gap-1 px-3 py-2 text-sm font-medium text-rocky hover:text-safety-orange"
+          aria-label="Open navigation menu"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+          <span class="sr-only">Menu</span>
+        </summary>
+        <nav
+          aria-label="Mobile navigation"
+          class="absolute left-0 right-0 top-full z-30 border-b border-light-grey bg-white px-6 py-4 shadow-lg"
+        >
+          <ul class="flex flex-col gap-1">
+            <li><a href={L('/about')} class="block py-2 text-base font-medium text-rocky hover:text-safety-orange">{nav.about}</a></li>
+            <li>
+              <details>
+                <summary class="cursor-pointer list-none py-2 text-base font-medium text-rocky hover:text-safety-orange">
+                  {nav.services} ▾
+                </summary>
+                <ul class="mt-1 space-y-1 pl-4">
+                  {norseServices.map((svc) => (
+                    <li><a href={L(`/services/${svc.slug}`)} class="block py-1 text-sm text-rocky-80 hover:text-safety-orange">{svc.titleEn}</a></li>
+                  ))}
+                  {xdrillServices.map((svc) => (
+                    <li>
+                      <a href={L(`/services/${svc.slug}`)} class="flex items-center gap-2 py-1 text-sm text-rocky-80 hover:text-safety-orange">
+                        {svc.titleEn}
+                        <BrandChip brand="xdrill" />
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </details>
+            </li>
+            <li><a href={L('/equipment')} class="block py-2 text-base font-medium text-rocky hover:text-safety-orange">{nav.equipment}</a></li>
+            <li><a href={L('/case-studies')} class="block py-2 text-base font-medium text-rocky hover:text-safety-orange">{nav.caseStudies}</a></li>
+            <li><a href={L('/sustainability')} class="block py-2 text-base font-medium text-rocky hover:text-safety-orange">{nav.sustainability}</a></li>
+            <li><a href={L('/careers')} class="block py-2 text-base font-medium text-rocky hover:text-safety-orange">{nav.careers}</a></li>
+            <li><a href={L('/contact')} class="block py-2 text-base font-medium text-rocky hover:text-safety-orange">{nav.contact}</a></li>
+          </ul>
+        </nav>
+      </details>
+    </div>
+  </div>
+</header>

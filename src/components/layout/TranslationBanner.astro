@@ -1,0 +1,24 @@
+---
+import { type Locale, defaultLocale } from '~/i18n/locales';
+import { t } from '~/i18n/ui';
+
+interface Props {
+  locale: Locale;
+  /** When true, the banner is rendered. Page templates compute this based on
+   *  whether the requested locale has a translation of the current slug. */
+  show: boolean;
+}
+
+const { locale, show } = Astro.props;
+
+if (!show || locale === defaultLocale) return null;
+
+const strings = t(locale);
+---
+
+<aside
+  role="status"
+  class="border-b border-safety-orange-50 bg-safety-orange-50/20 px-6 py-2 text-center text-sm text-rocky"
+>
+  <span class="font-medium">{strings.untranslatedBanner}</span>
+</aside>

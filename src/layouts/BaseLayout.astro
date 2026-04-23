@@ -2,15 +2,29 @@
 import '~/styles/global.css';
 import '@fontsource-variable/inter';
 import '@fontsource-variable/space-grotesk';
+import Header from '~/components/layout/Header.astro';
+import Footer from '~/components/layout/Footer.astro';
+import TranslationBanner from '~/components/layout/TranslationBanner.astro';
 import { defaultLocale, localeHtmlLang, type Locale } from '~/i18n/locales';
 
 interface Props {
   locale?: Locale;
   title: string;
   description?: string;
+  /** Path without locale prefix, used by LangSwitcher to build sibling URLs. */
+  path?: string;
+  /** Render the untranslated-fallback banner at the top of the page. */
+  showTranslationBanner?: boolean;
 }
 
-const { locale = defaultLocale, title, description } = Astro.props;
+const {
+  locale = defaultLocale,
+  title,
+  description,
+  path,
+  showTranslationBanner = false,
+} = Astro.props;
+
 const htmlLang = localeHtmlLang[locale];
 const canonical = new URL(Astro.url.pathname, Astro.site).toString();
 ---
@@ -34,7 +48,12 @@ const canonical = new URL(Astro.url.pathname, Astro.site).toString();
     <meta property="og:site_name" content="NORSE Diamond Drilling" />
     <meta property="og:locale" content={htmlLang.replace('-', '_')} />
   </head>
-  <body class="min-h-dvh bg-white text-rocky">
-    <slot />
+  <body class="flex min-h-dvh flex-col bg-white text-rocky">
+    <TranslationBanner locale={locale} show={showTranslationBanner} />
+    <Header locale={locale} path={path} />
+    <main class="flex-1">
+      <slot />
+    </main>
+    <Footer locale={locale} />
   </body>
 </html>
