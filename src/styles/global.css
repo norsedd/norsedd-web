@@ -1,0 +1,76 @@
+@import "tailwindcss";
+
+/* ------------------------------------------------------------------ */
+/* NORSE brand tokens                                                 */
+/* Source: NORSE Visual Identity → Color codes.pdf (Nov 2022)         */
+/* ------------------------------------------------------------------ */
+@theme {
+  /* Primary */
+  --color-safety-orange: #ff6b00;   /* RGB 255 107 0 */
+  --color-rocky:         #2a2a2a;   /* RGB 42 42 42  */
+
+  /* Safety orange tints (brand guide) */
+  --color-safety-orange-80: #ff8933;
+  --color-safety-orange-50: #ffb580;
+
+  /* Rocky Mountain tints */
+  --color-rocky-80: #555555;
+  --color-rocky-50: #959595;
+
+  /* Aquatic green — reserved for Sustainability / HSEQ accents. */
+  /* Do NOT use on generic CTAs; keep the orange CTA hierarchy sacred. */
+  --color-aquatic:    #196b66;
+  --color-aquatic-80: #478985;
+  --color-aquatic-50: #8cb5b3;
+
+  /* Neutrals */
+  --color-light-grey: #e2e2e2;
+
+  /* Typography */
+  --font-display: 'Space Grotesk Variable', 'Space Grotesk', ui-sans-serif, system-ui, sans-serif;
+  --font-sans:    'Inter Variable', 'Inter', ui-sans-serif, system-ui, sans-serif;
+
+  /* Display type scale (clamp for fluid mobile→desktop) */
+  --text-display-sm: clamp(1.875rem, 3vw + 1rem, 2.5rem);
+  --text-display-md: clamp(2.25rem, 4vw + 1rem, 3.5rem);
+  --text-display-lg: clamp(3rem, 6vw + 1rem, 5rem);
+}
+
+@layer base {
+  :root { color-scheme: light; }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    font-family: var(--font-sans);
+    color: var(--color-rocky);
+    background: #ffffff;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  h1, h2, h3, h4 {
+    font-family: var(--font-display);
+    letter-spacing: -0.015em;
+    color: var(--color-rocky);
+  }
+
+  /* WCAG 2.2 AA — always-visible focus ring */
+  :focus-visible {
+    outline: 2px solid var(--color-safety-orange);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}

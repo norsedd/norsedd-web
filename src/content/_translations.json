@@ -1,0 +1,4 @@
+{
+  "$schema": "Document translation status. Keys are `{collection}/{slug}`. Values map each locale to its status: 'missing' | 'draft' | 'published'. 'missing' means no file exists for that locale; the site will render the English fallback with an untranslated banner.",
+  "entries": {}
+}
